@@ -414,6 +414,9 @@ namespace sdp {
     void State::random_walk(const int n){
         // Print initial state
         std::cout << *this << std::endl;
+        if (is_complete()){
+            return;
+        }
 
         std::vector<Move> moves = possible_moves();
         for (int i = 0; i < n; i++){

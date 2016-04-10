@@ -36,6 +36,8 @@ int main(int argc, char* argv[]){
     cout << "Normalized" << endl;
     cout << state << endl;
 
+    state.random_walk(1000);
+
     return 0;
 }
 
