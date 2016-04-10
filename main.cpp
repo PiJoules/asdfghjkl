@@ -1,13 +1,11 @@
-#include <iostream>
 #include "State.h"
+#include <string>
 
 using namespace sdp;
 
 int main(int argc, char* argv[]){
     State state(argv[1]);
-
-    std::cout << state << std::endl;
-
+    state.random_walk(std::stoi(argv[2]));
     return 0;
 }
 
