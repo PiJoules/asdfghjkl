@@ -32,7 +32,7 @@
 #include <vector>
 #include <iostream>
 
-namespace sdp {
+namespace sbp {
     enum Direction {UP, DOWN, LEFT, RIGHT};
 
     class Move {
@@ -58,11 +58,20 @@ namespace sdp {
                     case DOWN: dir = "DOWN"; break;
                     case RIGHT: dir = "RIGHT"; break;
                     default: dir = "LEFT";
-                }
+                } 
                 out << "Move {direction: " << dir << ", piece: " << move.piece_
                     << "}";
                 return out;
             }
+
+            const bool operator==(const Move& other) const {
+                return piece_ == other.piece() && dir_ == other.direction();
+            }
+
+            const bool operator!=(const Move& other) const{
+                return !(*this == other);
+            }
+
     };
 
     class State {
@@ -76,7 +85,7 @@ namespace sdp {
             State(const std::string&);
 
             // Getter methods
-            const std::vector<std::vector<int>>& grid() const{
+            std::vector<std::vector<int>> grid() const{
                 return grid_;
             }
 
@@ -106,6 +115,49 @@ namespace sdp {
 
             // Perform random walk
             void random_walk(const int n);
+    };
+
+    /**
+     * Container for keeping track of move history.
+     */
+    class MoveTracker {
+        private:
+            State state_;  // Current state as result of last move;
+            std::vector<Move> moves_;  // Move history
+
+        public:
+            MoveTracker(State state): state_(state){}
+            MoveTracker(State state, std::vector<Move> moves): state_(state), moves_(moves){}
+
+            State state() const{
+                return state_;
+            }
+
+            std::vector<Move> moves() const {
+                return moves_;
+            }
+
+            void setState(const State state){
+                state_ = state;
+            }
+
+            void addMove(const Move move){
+                moves_.push_back(move);
+            }
+
+            MoveTracker addMoveCloning(const Move move){
+                MoveTracker mt = MoveTracker(state(), moves());
+                mt.addMove(move);
+                return mt;
+            }
+
+            const bool operator==(const MoveTracker& mt) const {
+                return state_ == mt.state() && moves_ == mt.moves();
+            }
+
+            const bool operator!=(const MoveTracker& other) const{
+                return !(*this == other);
+            }
     };
 }
 

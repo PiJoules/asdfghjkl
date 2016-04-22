@@ -5,31 +5,8 @@
 #include <vector>
 #include <set>
 #include <stdlib.h>
-#include <random>
-#include <iterator>
 
-namespace sdp {
-    /**
-     * ===Utility functions===
-     */
-
-    /**
-     * Select random element from vector.
-     */
-    template<typename Iter, typename RandomGenerator>
-    Iter random_element(Iter start, Iter end, RandomGenerator& g) {
-        std::uniform_int_distribution<> dis(0, std::distance(start, end) - 1);
-        std::advance(start, dis(g));
-        return start;
-    }
-
-    template<typename Iter>
-    Iter random_element(Iter start, Iter end) {
-        static std::random_device rd;
-        static std::mt19937 gen(rd());
-        return random_element(start, end, gen);
-    }
-
+namespace sbp {
     /**
      * Generic split string function.
      * Args:
@@ -105,7 +82,8 @@ namespace sdp {
      * Create clone of state.
      */
     State State::clone() const{
-        return State(grid_);
+        State state = State(grid_);
+        return state;
     }
 
     /**
@@ -186,7 +164,10 @@ namespace sdp {
         bool left_ok = true;
         if (startx > 0){
             for (int y = starty; y < starty + height; y++){
-                if (grid_[y][startx-1] != 0){
+                if (grid_[y][startx-1] == -1 && piece == 2){
+                    break;
+                }
+                else if (grid_[y][startx-1] != 0){
                     left_ok = false;
                     break;
                 }
@@ -200,7 +181,10 @@ namespace sdp {
         bool right_ok = true;
         if (startx + width < grid_[0].size()){
             for (int y = starty; y < starty + height; y++){
-                if (grid_[y][startx + width] != 0){
+                if (grid_[y][startx + width] == -1 && piece == 2){
+                    break;
+                }
+                else if (grid_[y][startx + width] != 0){
                     right_ok = false;
                     break;
                 }
@@ -214,7 +198,10 @@ namespace sdp {
         bool up_ok = true;
         if (starty > 0){
             for (int x = startx; x < startx + width; x++){
-                if (grid_[starty-1][x] != 0){
+                if (grid_[starty-1][x] == -1 && piece == 2){
+                    break;
+                }
+                else if (grid_[starty-1][x] != 0){
                     up_ok = false;
                     break;
                 }
@@ -228,7 +215,10 @@ namespace sdp {
         bool down_ok = true;
         if (starty + height < grid_.size()){
             for (int x = startx; x < startx + width; x++){
-                if (grid_[starty + height][x] != 0){
+                if (grid_[starty + height][x] == -1 && piece == 2){
+                    break;
+                }
+                else if (grid_[starty + height][x] != 0){
                     down_ok = false;
                     break;
                 }
@@ -398,40 +388,6 @@ namespace sdp {
                     grid_[y][x]=idx1;
                 }
             }
-        }
-    }
-
-    /**
-     * Perform random walk given move cap.
-     * 1. Generate all possible moves for board in current state.
-     * 2. Select 1 move at random.
-     * 3. Execute move.
-     * 4. Normalize resulting game state.
-     * 5. Stop if reached goal or reached cap on moves. Otherwise, repeat at 1.
-     *
-     * Print the state and move after each iteration.
-     */
-    void State::random_walk(const int n){
-        // Print initial state
-        std::cout << *this << std::endl;
-        if (is_complete()){
-            return;
-        }
-
-        std::vector<Move> moves = possible_moves();
-        for (int i = 0; i < n; i++){
-            Move move = *random_element(moves.begin(), moves.end());
-            apply_move(move);
-
-            // Print move and state
-            std::cout << move << std::endl;
-            std::cout << *this << std::endl;
-
-            normalize();
-            if (is_complete()){
-                break;
-            }
-            moves = possible_moves();
         }
     }
 };

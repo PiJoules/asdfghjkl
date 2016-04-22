@@ -1,8 +1,9 @@
 #include <iostream>
 #include <cassert>
 #include "State.h"
+#include "Algorithms.h"
 
-using namespace sdp;
+using namespace sbp;
 using namespace std;
 
 int main(int argc, char* argv[]){
@@ -36,7 +37,7 @@ int main(int argc, char* argv[]){
     cout << "Normalized" << endl;
     cout << state << endl;
 
-    state.random_walk(1000);
+    random_walk(state, 1000);
 
     return 0;
 }

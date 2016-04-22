@@ -1,0 +1,13 @@
+Move {direction: LEFT, piece: 2}
+Move {direction: DOWN, piece: 4}
+Move {direction: RIGHT, piece: 3}
+Move {direction: UP, piece: 2}
+Move {direction: UP, piece: 2}
+explored_nodes: 20
+5,4,
+1,2,2,1,1,
+1,0,0,3,1,
+1,0,0,4,1,
+1,1,1,1,1,
+
+This took 0.01s.

@@ -17,6 +17,18 @@ To load a file state and execute a random walk up to N moves:
 $ ./sbp path/to/state/file.txt N
 ```
 
+To build for breadth first search, depth first search, or iterative deepening:
+```sh
+$ make build_bfs
+$ make build_dfs
+$ make build_ids
+```
+
+To use any of these with a state file:
+```sh
+$ ./sbp path/to/state/file.txt
+```
+
 ## Test
 This isn't so much a test, but some debug output:
 ```sh
