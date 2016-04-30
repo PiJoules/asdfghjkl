@@ -1,44 +1,56 @@
 #include <iostream>
 #include <cassert>
+#include <utility>
 #include "State.h"
 #include "Algorithms.h"
 
 using namespace sbp;
 using namespace std;
 
+/**
+ * Test clones have the same grid and are 2 different objects.
+ */
+void test_clone(const State& state){
+    State clone = state.clone();
+    assert(clone == state);
+
+    const Move move = Move(LEFT, 2);
+    clone.apply_move(move);
+    assert(state != clone);
+}
+
+void test_contains(const State& state){
+    assert(state.contains(3));
+    assert(!state.contains(5));
+}
+
+void test_pos(const State& state){
+    assert(state.pos(2) == (pair<uint64_t, uint64_t>(2, 2)));
+    assert(state.pos(-1) == (pair<uint64_t, uint64_t>(1, 0)));
+    assert(state.pos(5) == (pair<uint64_t, uint64_t>(0, 0)));
+}
+
+void test_manhattan_dist(const State& state){
+    assert(state.manhattan_dist(2, -1) == 3);  // Existing piece
+    assert(state.manhattan_dist(5, -1) == 0);  // Nonexistant piece
+}
+
 int main(int argc, char* argv[]){
-    State state(argv[1]);
+    State state("SBP-test.txt");
 
-    if (state.is_complete()){
-        cout << "This puzzle is already complete." << endl;
-        return 0;
-    }
+    cout << "Testing clone..." << endl;
+    test_clone(state);
 
-    cout << state << endl;
+    cout << "Testing constains piece..." << endl;
+    test_contains(state);
 
-    cout << "State moves" << endl;
-    for (auto& move : state.possible_moves()){
-        cout << move << endl;
-    }
+    cout << "Testing piece position..." << endl;
+    test_pos(state);
 
-    state.apply_move(Move(LEFT, 2));
-    cout << state << endl;
+    cout << "Testing manhattan distance..." << endl;
+    test_manhattan_dist(state);
 
-    State state2 = state.apply_move_cloning(Move(RIGHT, 2));
-    cout << "Original" << endl;
-    cout << state << endl;
-    cout << "Copy" << endl;
-    cout << state2 << endl;
-
-    assert(state == state.clone());
-    assert(state != state2);
-
-    state.normalize();
-    cout << "Normalized" << endl;
-    cout << state << endl;
-
-    random_walk(state, 1000);
-
+    cout << "Tests passed!" << endl;
     return 0;
 }
 

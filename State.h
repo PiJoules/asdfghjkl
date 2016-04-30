@@ -115,6 +115,18 @@ namespace sbp {
 
             // Perform random walk
             void random_walk(const int n);
+
+            // Grid contains piece
+            const bool contains(int piece) const;
+
+            // Position of piece.
+            const std::pair<uint64_t, uint64_t> pos(int piece) const;
+
+            // Manhattan distance
+            const uint64_t manhattan_dist(int piece1, int piece2) const;
+
+            // Default heuristic
+            const uint64_t heuristic() const;
     };
 
     /**

@@ -16,5 +16,9 @@ build_ids:
 
 test:
 	g++ test.cpp $(CPP_FILES) -std=c++11 -o sbp_test
-	./sbp_test states/SBP-level0.txt
+	./sbp_test
+
+test_A_star:
+	g++ $(CPP_FILES) AStar.cpp -std=c++11 -o sbp_test
+	./sbp_test SBP-test.txt
 

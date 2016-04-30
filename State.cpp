@@ -4,6 +4,9 @@
 #include <sstream>
 #include <vector>
 #include <set>
+#include <utility>
+#include <cmath>
+#include <algorithm>
 #include <stdlib.h>
 
 namespace sbp {
@@ -389,5 +392,58 @@ namespace sbp {
                 }
             }
         }
+    }
+
+    /**
+     * Check if the grid contains a piece.
+     */
+    const bool State::contains(int piece) const {
+        for (const auto& row : grid_){
+            if (std::find(row.begin(), row.end(), piece) != row.end()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Find position of top left corner of a piece.
+     * Not found if coords are (0,0). A wall is always at position (0,0).
+     */
+    const std::pair<uint64_t, uint64_t> State::pos(int piece) const {
+        std::pair<uint64_t, uint64_t> position(0, 0);
+        for (auto it = grid_.begin(); it != grid_.end(); ++it){
+            const auto row = *it;
+            auto pos = std::find(row.begin(), row.end(), piece) - row.begin();
+            if (pos < row.size()){
+                position.first = pos;  // x
+                position.second = it - grid_.begin();  // y
+                return position;
+            }
+        }
+        return position;
+    }
+
+    /**
+     * Manhattan distance implementation.
+     */
+    const uint64_t State::manhattan_dist(int piece1, int piece2) const {
+        // Check if both pieces are in the grid. Otherwise, return 0.
+        if (!contains(piece1) || !contains(piece2)){
+            return 0;
+        }
+
+        // Find distance
+        auto pos1 = pos(piece1);
+        auto pos2 = pos(piece2);
+        return std::abs(pos1.first - pos2.first) + std::abs(pos1.second - pos2.second);
+    }
+
+    /**
+     * Heuristic for determining how far we are from goal.
+     * The default will be the manhattan distance.
+     */
+    const uint64_t State::heuristic() const {
+        return manhattan_dist(2, -1);
     }
 };
