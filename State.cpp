@@ -123,19 +123,9 @@ namespace sbp {
         }
 
         // Get piece location
-        int startx = -1, starty = -1;
-        bool found = false;
-        for (int y = 0; y < grid_.size() && !found; y++){
-            std::vector<int> row = grid_[y];
-            for (int x = 0; x < row.size(); x++){
-                if (row[x] == piece){
-                    startx = x;
-                    starty = y;
-                    found = true;
-                    break;
-                }
-            }
-        }
+        std::pair<uint64_t, uint64_t> position = pos(piece);
+        int startx = position.first;
+        int starty = position.second;
 
         // Exit if piece does not exist
         if (startx == -1 || starty == -1){
@@ -410,7 +400,7 @@ namespace sbp {
      * Find position of top left corner of a piece.
      * Not found if coords are (0,0). A wall is always at position (0,0).
      */
-    const std::pair<uint64_t, uint64_t> State::pos(int piece) const {
+    const std::pair<uint64_t, uint64_t> State::pos(const int piece) const {
         std::pair<uint64_t, uint64_t> position(0, 0);
         for (auto it = grid_.begin(); it != grid_.end(); ++it){
             const auto row = *it;
@@ -445,5 +435,17 @@ namespace sbp {
      */
     const uint64_t State::heuristic() const {
         return manhattan_dist(2, -1);
+    }
+
+    /**
+     * Get all possible states that can be made from the list
+     * of possible moves.
+     */
+    const std::vector<State> State::neighbor_states() const {
+        std::vector<State> neighbors;
+        for (const Move& move : possible_moves()){
+            neighbors.push_back(apply_move_cloning(move));
+        }
+        return neighbors;
     }
 };

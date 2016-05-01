@@ -19,6 +19,14 @@ void test_clone(const State& state){
     assert(state != clone);
 }
 
+/**
+ * Test all possible neighbor states exist.
+ * I am lazy and instead will just check the number.
+ */
+void test_neighbor_states(const State& state){
+    assert(state.neighbor_states().size() == 2);
+}
+
 void test_contains(const State& state){
     assert(state.contains(3));
     assert(!state.contains(5));
@@ -49,6 +57,9 @@ int main(int argc, char* argv[]){
 
     cout << "Testing manhattan distance..." << endl;
     test_manhattan_dist(state);
+
+    cout << "Testing neighbor states..." << endl;
+    test_neighbor_states(state);
 
     cout << "Tests passed!" << endl;
     return 0;

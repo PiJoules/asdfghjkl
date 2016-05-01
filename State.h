@@ -41,6 +41,7 @@ namespace sbp {
             int piece_;
 
         public:
+            Move(){}
             Move(Direction d, int p): dir_(d), piece_(p){}
 
             // Standard getter methods
@@ -80,6 +81,7 @@ namespace sbp {
             void swapIdx(int idx1, int idx2);
 
         public:
+            State(){}
             State(std::vector<std::vector<int>> grid): grid_(grid){}
             // Constructor for loading game from filename (disk)
             State(const std::string&);
@@ -126,7 +128,10 @@ namespace sbp {
             const uint64_t manhattan_dist(int piece1, int piece2) const;
 
             // Default heuristic
-            const uint64_t heuristic() const;
+            virtual const uint64_t heuristic() const;
+
+            // List of possible neighbor states
+            const std::vector<State> neighbor_states() const;
     };
 
     /**
