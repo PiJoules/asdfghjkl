@@ -20,5 +20,5 @@ test:
 
 test_A_star:
 	g++ $(CPP_FILES) AStar.cpp -std=c++11 -o sbp_test
-	./sbp_test SBP-test.txt
+	./sbp_test SBP-test.txt SBP-test-solution.txt
 

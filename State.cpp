@@ -1,7 +1,4 @@
 #include "State.h"
-#include <fstream>
-#include <string>
-#include <sstream>
 #include <vector>
 #include <set>
 #include <utility>
@@ -10,39 +7,8 @@
 #include <stdlib.h>
 
 namespace sbp {
-    /**
-     * Generic split string function.
-     * Args:
-     *     keep_empty (bool): Retain empty strings in the returned vector if set to true.
-     *         Defaults to true.
-     */
-    static std::vector<std::string> split(const std::string& s, const std::string& delim,
-            const bool keep_empty=true){
-        std::vector<std::string> parts;
-        size_t pos = 0, last_pos = 0;
-        std::string token;
-        while ((pos = s.find(delim, last_pos)) != std::string::npos) {
-            token = s.substr(last_pos, pos - last_pos);
-            if (keep_empty || token.length() > 0){
-                parts.push_back(token);
-            }
-            last_pos = pos + 1;
-        }
-        token = s.substr(last_pos);
-        if (keep_empty || token.length() > 0){
-            parts.push_back(token);
-        }
-        return parts;
-    }
-
-    /**
-     * ===State===
-     */
-
-    /**
-     * Constructor that loads state from file.
-     */
-    State::State(const std::string& filename){
+    std::vector<std::vector<int>> State::file_to_grid(const std::string& filename) const {
+        std::vector<std::vector<int>> grid;
         std::ifstream state_file(filename.c_str());
 
         // First line - w,h,
@@ -53,14 +19,23 @@ namespace sbp {
         int height = std::stoi(parts[1]);
 
         // Remainder of file
-        grid_.resize(height, std::vector<int>(width));
+        grid.resize(height, std::vector<int>(width));
         for (int y = 0; y < height; y++){
             getline(state_file, line);
             parts = split(line, ",", false);
             for (int x = 0; x < width; x++){
-                grid_[y][x] = std::stoi(parts[x]);
+                grid[y][x] = std::stoi(parts[x]);
             }
         }
+
+        return grid;
+    }
+
+    /**
+     * Constructor that loads state from file.
+     */
+    State::State(const std::string& filename){
+        grid_ = file_to_grid(filename);
     }
 
     /**
@@ -424,8 +399,8 @@ namespace sbp {
         }
 
         // Find distance
-        auto pos1 = pos(piece1);
-        auto pos2 = pos(piece2);
+        const auto pos1 = pos(piece1);
+        const auto pos2 = pos(piece2);
         return std::abs(pos1.first - pos2.first) + std::abs(pos1.second - pos2.second);
     }
 

@@ -3,6 +3,7 @@
 #include <limits>
 #include <algorithm>
 #include <vector>
+#include <cmath>
 #include "State.h"
 
 
@@ -79,6 +80,8 @@ namespace sbp {
      * A* implementation
      */
     const std::vector<Move> A_star(const State start){
+        uint64_t explored_nodes = 0;
+
         // The set of nodes already evaluated.
         std::unordered_set<State> closed_set;
 
@@ -103,6 +106,8 @@ namespace sbp {
         std::unordered_map<State, uint64_t> f_score({{start, start.heuristic()}});
 
         while (!open_set.empty()){
+            explored_nodes++;
+
             // Get node with lowest valued f_score
             const auto current = *std::min_element(open_set.begin(), open_set.end(),
                 [&f_score](const State state1, const State state2){
@@ -121,6 +126,7 @@ namespace sbp {
 
             // Check for completeness
             if (current.is_complete()){
+                std::cout << "Explored " << explored_nodes << " nodes" << std::endl;
                 return reconstruct_path(came_from, current);
             }
 
@@ -162,12 +168,54 @@ namespace sbp {
             }
         }
 
+        std::cout << "Explored " << explored_nodes << " nodes" << std::endl;
         return std::vector<Move>();
     }
+
+
+    class SingleGoalState : public State {
+        private:
+            static const int GOAL_PIECE = 2;
+            State goal_;
+
+            // Largest piece number on board
+            int piece_max_;
+
+        public:
+            SingleGoalState(){}
+            SingleGoalState(const std::string& filename, const std::string& goal_filename){
+                grid_ = file_to_grid(filename);
+                goal_ = State(goal_filename);
+
+                // Get smallest and largest piece numbers
+                int largest = GOAL_PIECE;
+                for (const auto& row : grid_){
+                    for (const auto& elem : row){
+                        if (elem > largest){
+                            largest = elem;
+                        }
+                    }
+                }
+                piece_max_ = largest;
+            }
+
+            const uint64_t heuristic() const {
+                size_t dist = manhattan_dist(2, -1);
+                // Get distance for every other piece now
+                for (size_t i = GOAL_PIECE + 1; i <= piece_max_; i++){
+                    const auto current_pos = pos(i);
+                    const auto goal_pos = goal_.pos(i);
+                    dist += std::abs(current_pos.first - goal_pos.first) +
+                            std::abs(current_pos.second - goal_pos.second);
+                }
+                return dist;
+            }
+    };
 }
 
 int main(int argc, char* argv[]){
     sbp::State state(argv[1]);
+    //sbp::SingleGoalState state(argv[1], argv[2]);
     std::vector<sbp::Move> path = sbp::A_star(state);
 
     if (path.empty()){
@@ -175,7 +223,7 @@ int main(int argc, char* argv[]){
         return 1;
     }
 
-    std::cout << "Solution path" << std::endl;
+    std::cout << "Solution path length: " << path.size() << std::endl;
     for (const auto& move : path){
         std::cout << move << std::endl;
         state.apply_move(move);
