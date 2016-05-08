@@ -89,7 +89,8 @@ namespace sbp {
      * This method assumes (does not check):
      * - The piece is also rectangular.
      */
-    const std::vector<Move> State::possible_moves(const int& piece) const{
+    //const std::vector<Move> State::possible_moves(const int& piece) const{
+    const std::vector<Move> State::possible_moves(const int piece) const{
         std::vector<Move> moves;
 
         // Invalid pieces cannot move
@@ -301,6 +302,7 @@ namespace sbp {
     /**
      * State comparison.
      */
+    //const bool State::operator==(const State& other) const{
     const bool State::operator==(const State& other) const{
         // Compare dimensions
         if (this->grid_.size() != other.grid().size()){
@@ -310,14 +312,28 @@ namespace sbp {
             return false;
         }
 
+        State clone1 = clone();
+        State clone2 = other.clone();
+        clone1.normalize();
+        clone2.normalize();
+
         // Compare elements
-        for (int y = 0; y < this->grid_.size(); y++){
-            for (int x = 0; x < this->grid_[0].size(); x++){
-                if (this->grid_[y][x] != other.grid()[y][x]){
+        const auto grid1 = clone1.grid();
+        const auto grid2 = clone2.grid();
+        for (int y = 0; y < grid1.size(); y++){
+            for (int x = 0; x < grid1[0].size(); x++){
+                if (grid1[y][x] != grid2[y][x]){
                     return false;
                 }
             }
         }
+        //for (int y = 0; y < this->grid_.size(); y++){
+        //    for (int x = 0; x < this->grid_[0].size(); x++){
+        //        if (this->grid_[y][x] != other.grid()[y][x]){
+        //            return false;
+        //        }
+        //    }
+        //}
         return true;
     }
 
@@ -375,7 +391,7 @@ namespace sbp {
      * Find position of top left corner of a piece.
      * Not found if coords are (0,0). A wall is always at position (0,0).
      */
-    const std::pair<uint64_t, uint64_t> State::pos(const int piece) const {
+    const std::pair<int64_t, int64_t> State::pos(const int piece) const {
         std::pair<uint64_t, uint64_t> position(0, 0);
         for (auto it = grid_.begin(); it != grid_.end(); ++it){
             const auto row = *it;
@@ -402,6 +418,7 @@ namespace sbp {
         const auto pos1 = pos(piece1);
         const auto pos2 = pos(piece2);
         return std::abs(pos1.first - pos2.first) + std::abs(pos1.second - pos2.second);
+        //return abs(pos1.first - pos2.first) + abs(pos1.second - pos2.second);
     }
 
     /**

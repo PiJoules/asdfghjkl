@@ -129,7 +129,8 @@ namespace sbp {
             const bool is_complete() const;
 
             // List of possible moves
-            const std::vector<Move> possible_moves(const int& piece) const;
+            //const std::vector<Move> possible_moves(const int& piece) const;
+            const std::vector<Move> possible_moves(const int piece) const;
             const std::vector<Move> possible_moves() const;
 
             // Apply moves (not given in camel case for consistency)
@@ -150,7 +151,8 @@ namespace sbp {
             const bool contains(int piece) const;
 
             // Position of piece.
-            const std::pair<uint64_t, uint64_t> pos(int piece) const;
+            //const std::pair<uint64_t, uint64_t> pos(int piece) const;
+            const std::pair<int64_t, int64_t> pos(int piece) const;
 
             // Manhattan distance
             const uint64_t manhattan_dist(int piece1, int piece2) const;
