@@ -7,6 +7,7 @@
 #include "State.h"
 #include <cassert>
 #include <queue>
+#include "AStar.h"
 
 
 namespace std {
@@ -137,81 +138,48 @@ namespace sbp {
     }
 
 
-    class SingleGoalState : public State {
-        private:
-            static const int GOAL_PIECE = 2;
-            State goal_;
-
-            // Largest piece number on board
-            int piece_max_;
-
-        public:
-            SingleGoalState(){}
-            SingleGoalState(const std::string& filename):State(filename){}
-
-            /**
-             * Blockage cost.
-             * The heuristic will be the manhattan distance plus
-             * 1 if the goal is blocked by a piece, or 0 otherwise.
-             */
-            const uint64_t heuristic() const {
-                size_t dist = manhattan_dist(2, -1);
-                for (size_t y = 0; y < grid_.size(); y++){
-                    for (size_t x = 0; x < grid_[0].size(); x++){
-                        const auto elem = grid_[y][x];
-                        if (elem == -1){
-                            if (y > 0){
-                                // Up
-                                const auto up = grid_[y-1][x];
-                                if (up > 2){
-                                    dist++;
-                                }
-                            }
-                            if (y < grid_.size()-1){
-                                // Up
-                                const auto down = grid_[y+1][x];
-                                if (down > 2){
-                                    dist++;
-                                }
-                            }
-                            if (x > 0){
-                                // Up
-                                const auto left = grid_[y][x-1];
-                                if (left > 2){
-                                    dist++;
-                                }
-                            }
-                            if (x < grid_[0].size()-1){
-                                // Up
-                                const auto right = grid_[y][x+1];
-                                if (right > 2){
-                                    dist++;
-                                }
-                            }
+    /**
+     * Blockage cost.
+     * The heuristic will be the manhattan distance plus
+     * 1 if the goal is blocked by a piece, or 0 otherwise.
+     */
+    const uint64_t SingleGoalState::heuristic() const {
+        size_t dist = manhattan_dist(2, -1);
+        for (size_t y = 0; y < grid_.size(); y++){
+            for (size_t x = 0; x < grid_[0].size(); x++){
+                const auto elem = grid_[y][x];
+                if (elem == -1){
+                    if (y > 0){
+                        // Up
+                        const auto up = grid_[y-1][x];
+                        if (up > 2){
+                            dist++;
+                        }
+                    }
+                    if (y < grid_.size()-1){
+                        // Up
+                        const auto down = grid_[y+1][x];
+                        if (down > 2){
+                            dist++;
+                        }
+                    }
+                    if (x > 0){
+                        // Up
+                        const auto left = grid_[y][x-1];
+                        if (left > 2){
+                            dist++;
+                        }
+                    }
+                    if (x < grid_[0].size()-1){
+                        // Up
+                        const auto right = grid_[y][x+1];
+                        if (right > 2){
+                            dist++;
                         }
                     }
                 }
-                return dist;
             }
-    };
-}
-
-int main(int argc, char* argv[]){
-    //sbp::State state(argv[1]);
-    sbp::SingleGoalState state(argv[1]);
-    std::vector<sbp::Move> path = sbp::A_star(state);
-
-    if (path.empty()){
-        std::cout << "No solution found." << std::endl;
-        return 1;
+        }
+        return dist;
     }
-
-    std::cout << "Solution path length: " << path.size() << std::endl;
-    for (const auto& move : path){
-        std::cout << move << std::endl;
-        state.apply_move(move);
-    }
-    std::cout << state << std::endl;
-
-    return 0;
 }

@@ -1,0 +1,314 @@
+A* (Manhattan Distance)
+Explored 12 nodes
+Solution path length: 5
+Move {direction: LEFT, piece: 2}
+Move {direction: DOWN, piece: 4}
+Move {direction: RIGHT, piece: 3}
+Move {direction: UP, piece: 2}
+Move {direction: UP, piece: 2}
+5,4,
+1,2,2,1,1,
+1,0,0,3,1,
+1,0,0,4,1,
+1,1,1,1,1,
+
+real	0m0.010s
+user	0m0.006s
+sys	0m0.002s
+
+Explored 87 nodes
+Solution path length: 16
+Move {direction: LEFT, piece: 4}
+Move {direction: DOWN, piece: 4}
+Move {direction: LEFT, piece: 5}
+Move {direction: LEFT, piece: 5}
+Move {direction: DOWN, piece: 2}
+Move {direction: RIGHT, piece: 3}
+Move {direction: UP, piece: 5}
+Move {direction: LEFT, piece: 2}
+Move {direction: UP, piece: 7}
+Move {direction: UP, piece: 7}
+Move {direction: RIGHT, piece: 6}
+Move {direction: RIGHT, piece: 4}
+Move {direction: UP, piece: 6}
+Move {direction: RIGHT, piece: 4}
+Move {direction: DOWN, piece: 2}
+Move {direction: LEFT, piece: 2}
+5,5,
+1,1,1,1,1,
+1,5,3,7,1,
+1,0,0,6,1,
+2,2,0,4,1,
+1,1,1,1,1,
+
+real	0m0.089s
+user	0m0.080s
+sys	0m0.004s
+
+Explored 710 nodes
+Solution path length: 33
+Move {direction: LEFT, piece: 3}
+Move {direction: LEFT, piece: 2}
+Move {direction: LEFT, piece: 4}
+Move {direction: UP, piece: 5}
+Move {direction: UP, piece: 7}
+Move {direction: RIGHT, piece: 6}
+Move {direction: UP, piece: 8}
+Move {direction: RIGHT, piece: 6}
+Move {direction: DOWN, piece: 4}
+Move {direction: LEFT, piece: 7}
+Move {direction: LEFT, piece: 4}
+Move {direction: DOWN, piece: 7}
+Move {direction: DOWN, piece: 2}
+Move {direction: LEFT, piece: 5}
+Move {direction: UP, piece: 8}
+Move {direction: RIGHT, piece: 2}
+Move {direction: RIGHT, piece: 3}
+Move {direction: UP, piece: 4}
+Move {direction: UP, piece: 4}
+Move {direction: LEFT, piece: 7}
+Move {direction: UP, piece: 7}
+Move {direction: LEFT, piece: 6}
+Move {direction: LEFT, piece: 6}
+Move {direction: DOWN, piece: 2}
+Move {direction: DOWN, piece: 5}
+Move {direction: RIGHT, piece: 5}
+Move {direction: RIGHT, piece: 3}
+Move {direction: RIGHT, piece: 4}
+Move {direction: UP, piece: 7}
+Move {direction: UP, piece: 6}
+Move {direction: LEFT, piece: 2}
+Move {direction: LEFT, piece: 2}
+Move {direction: LEFT, piece: 2}
+6,5,
+1,1,1,1,1,1,
+1,7,4,3,8,1,
+1,6,6,3,5,1,
+2,2,0,0,0,1,
+1,1,1,1,1,1,
+
+real	0m2.025s
+user	0m2.014s
+sys	0m0.006s
+
+Explored 2291 nodes
+Solution path length: 50
+Move {direction: LEFT, piece: 6}
+Move {direction: LEFT, piece: 7}
+Move {direction: UP, piece: 10}
+Move {direction: RIGHT, piece: 9}
+Move {direction: DOWN, piece: 7}
+Move {direction: DOWN, piece: 4}
+Move {direction: RIGHT, piece: 3}
+Move {direction: UP, piece: 5}
+Move {direction: UP, piece: 6}
+Move {direction: LEFT, piece: 10}
+Move {direction: UP, piece: 8}
+Move {direction: LEFT, piece: 7}
+Move {direction: DOWN, piece: 10}
+Move {direction: DOWN, piece: 2}
+Move {direction: RIGHT, piece: 3}
+Move {direction: RIGHT, piece: 5}
+Move {direction: RIGHT, piece: 3}
+Move {direction: RIGHT, piece: 5}
+Move {direction: UP, piece: 6}
+Move {direction: UP, piece: 4}
+Move {direction: UP, piece: 8}
+Move {direction: UP, piece: 7}
+Move {direction: LEFT, piece: 10}
+Move {direction: LEFT, piece: 10}
+Move {direction: LEFT, piece: 9}
+Move {direction: LEFT, piece: 9}
+Move {direction: DOWN, piece: 2}
+Move {direction: DOWN, piece: 5}
+Move {direction: RIGHT, piece: 5}
+Move {direction: RIGHT, piece: 4}
+Move {direction: RIGHT, piece: 6}
+Move {direction: UP, piece: 8}
+Move {direction: UP, piece: 7}
+Move {direction: UP, piece: 10}
+Move {direction: LEFT, piece: 9}
+Move {direction: LEFT, piece: 2}
+Move {direction: DOWN, piece: 5}
+Move {direction: DOWN, piece: 3}
+Move {direction: DOWN, piece: 5}
+Move {direction: DOWN, piece: 3}
+Move {direction: RIGHT, piece: 4}
+Move {direction: RIGHT, piece: 6}
+Move {direction: RIGHT, piece: 8}
+Move {direction: RIGHT, piece: 7}
+Move {direction: UP, piece: 10}
+Move {direction: UP, piece: 10}
+Move {direction: UP, piece: 9}
+Move {direction: UP, piece: 9}
+Move {direction: LEFT, piece: 2}
+Move {direction: LEFT, piece: 2}
+6,6,
+1,1,1,1,1,1,
+1,10,8,6,4,1,
+1,9,7,7,4,1,
+2,2,0,0,3,1,
+2,2,0,0,5,1,
+1,1,1,1,1,1,
+
+real	0m17.796s
+user	0m17.510s
+sys	0m0.117s
+
+A* (Blockage)
+Explored 12 nodes
+Solution path length: 5
+Move {direction: LEFT, piece: 2}
+Move {direction: DOWN, piece: 4}
+Move {direction: RIGHT, piece: 3}
+Move {direction: UP, piece: 2}
+Move {direction: UP, piece: 2}
+5,4,
+1,2,2,1,1,
+1,0,0,3,1,
+1,0,0,4,1,
+1,1,1,1,1,
+
+real	0m0.011s
+user	0m0.007s
+sys	0m0.002s
+
+Explored 87 nodes
+Solution path length: 16
+Move {direction: LEFT, piece: 4}
+Move {direction: DOWN, piece: 4}
+Move {direction: LEFT, piece: 5}
+Move {direction: LEFT, piece: 5}
+Move {direction: DOWN, piece: 2}
+Move {direction: RIGHT, piece: 3}
+Move {direction: UP, piece: 5}
+Move {direction: LEFT, piece: 2}
+Move {direction: UP, piece: 7}
+Move {direction: UP, piece: 7}
+Move {direction: RIGHT, piece: 6}
+Move {direction: RIGHT, piece: 4}
+Move {direction: UP, piece: 6}
+Move {direction: RIGHT, piece: 4}
+Move {direction: DOWN, piece: 2}
+Move {direction: LEFT, piece: 2}
+5,5,
+1,1,1,1,1,
+1,5,3,7,1,
+1,0,0,6,1,
+2,2,0,4,1,
+1,1,1,1,1,
+
+real	0m0.085s
+user	0m0.077s
+sys	0m0.004s
+
+Explored 710 nodes
+Solution path length: 33
+Move {direction: LEFT, piece: 3}
+Move {direction: LEFT, piece: 2}
+Move {direction: LEFT, piece: 4}
+Move {direction: UP, piece: 5}
+Move {direction: UP, piece: 7}
+Move {direction: RIGHT, piece: 6}
+Move {direction: UP, piece: 8}
+Move {direction: RIGHT, piece: 6}
+Move {direction: DOWN, piece: 4}
+Move {direction: LEFT, piece: 7}
+Move {direction: LEFT, piece: 4}
+Move {direction: DOWN, piece: 7}
+Move {direction: DOWN, piece: 2}
+Move {direction: LEFT, piece: 5}
+Move {direction: UP, piece: 8}
+Move {direction: RIGHT, piece: 2}
+Move {direction: RIGHT, piece: 3}
+Move {direction: UP, piece: 4}
+Move {direction: UP, piece: 4}
+Move {direction: LEFT, piece: 7}
+Move {direction: UP, piece: 7}
+Move {direction: LEFT, piece: 6}
+Move {direction: LEFT, piece: 6}
+Move {direction: DOWN, piece: 2}
+Move {direction: DOWN, piece: 5}
+Move {direction: RIGHT, piece: 5}
+Move {direction: RIGHT, piece: 3}
+Move {direction: RIGHT, piece: 4}
+Move {direction: UP, piece: 7}
+Move {direction: UP, piece: 6}
+Move {direction: LEFT, piece: 2}
+Move {direction: LEFT, piece: 2}
+Move {direction: LEFT, piece: 2}
+6,5,
+1,1,1,1,1,1,
+1,7,4,3,8,1,
+1,6,6,3,5,1,
+2,2,0,0,0,1,
+1,1,1,1,1,1,
+
+real	0m2.121s
+user	0m2.097s
+sys	0m0.014s
+
+Explored 2291 nodes
+Solution path length: 50
+Move {direction: LEFT, piece: 6}
+Move {direction: LEFT, piece: 7}
+Move {direction: UP, piece: 10}
+Move {direction: RIGHT, piece: 9}
+Move {direction: DOWN, piece: 7}
+Move {direction: DOWN, piece: 4}
+Move {direction: RIGHT, piece: 3}
+Move {direction: UP, piece: 5}
+Move {direction: UP, piece: 6}
+Move {direction: LEFT, piece: 10}
+Move {direction: UP, piece: 8}
+Move {direction: LEFT, piece: 7}
+Move {direction: DOWN, piece: 10}
+Move {direction: DOWN, piece: 2}
+Move {direction: RIGHT, piece: 3}
+Move {direction: RIGHT, piece: 5}
+Move {direction: RIGHT, piece: 3}
+Move {direction: RIGHT, piece: 5}
+Move {direction: UP, piece: 6}
+Move {direction: UP, piece: 4}
+Move {direction: UP, piece: 8}
+Move {direction: UP, piece: 7}
+Move {direction: LEFT, piece: 10}
+Move {direction: LEFT, piece: 10}
+Move {direction: LEFT, piece: 9}
+Move {direction: LEFT, piece: 9}
+Move {direction: DOWN, piece: 2}
+Move {direction: DOWN, piece: 5}
+Move {direction: RIGHT, piece: 5}
+Move {direction: RIGHT, piece: 4}
+Move {direction: RIGHT, piece: 6}
+Move {direction: UP, piece: 8}
+Move {direction: UP, piece: 7}
+Move {direction: UP, piece: 10}
+Move {direction: LEFT, piece: 9}
+Move {direction: LEFT, piece: 2}
+Move {direction: DOWN, piece: 5}
+Move {direction: DOWN, piece: 3}
+Move {direction: DOWN, piece: 5}
+Move {direction: DOWN, piece: 3}
+Move {direction: RIGHT, piece: 4}
+Move {direction: RIGHT, piece: 6}
+Move {direction: RIGHT, piece: 8}
+Move {direction: RIGHT, piece: 7}
+Move {direction: UP, piece: 10}
+Move {direction: UP, piece: 10}
+Move {direction: UP, piece: 9}
+Move {direction: UP, piece: 9}
+Move {direction: LEFT, piece: 2}
+Move {direction: LEFT, piece: 2}
+6,6,
+1,1,1,1,1,1,
+1,10,8,6,4,1,
+1,9,7,7,4,1,
+2,2,0,0,3,1,
+2,2,0,0,5,1,
+1,1,1,1,1,1,
+
+real	0m17.521s
+user	0m17.344s
+sys	0m0.097s
+

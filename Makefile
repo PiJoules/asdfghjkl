@@ -1,24 +1,34 @@
-.PHONY: build
+.PHONY: default
+default: run;
 
-CPP_FILES = State.cpp Algorithms.cpp
+CPP_FILES = State.cpp Algorithms.cpp AStar.cpp
+STATE ?= states/SBP-level0.txt
+OUTPUT = output-part3.txt
 
-build:
-	g++ main.cpp $(CPP_FILES) -std=c++11 -o sbp
+%.o: %.cpp
+	g++ $< $(CPP_FILES) -std=c++11 -o $@
 
-build_bfs:
-	g++ bfs.cpp $(CPP_FILES) -std=c++11 -o sbp
+%: %.o
+	./$< $(STATE)
 
-build_dfs:
-	g++ dfs.cpp $(CPP_FILES) -std=c++11 -o sbp
+build: bfs.o dfs.o ids.o manhattan.o blockage.o
 
-build_ids:
-	g++ ids.cpp $(CPP_FILES) -std=c++11 -o sbp
+run: manhattan.o blockage.o
+	echo "A* (Manhattan Distance)" > $(OUTPUT)
+	{ time ./manhattan.o states/SBP-level0.txt; echo ""; } >>$(OUTPUT) 2>&1
+	{ time ./manhattan.o states/SBP-level1.txt; echo ""; } >>$(OUTPUT) 2>&1
+	{ time ./manhattan.o states/SBP-level2.txt; echo ""; } >>$(OUTPUT) 2>&1
+	{ time ./manhattan.o states/SBP-level3.txt; echo ""; } >>$(OUTPUT) 2>&1
+	echo "A* (Blockage)" >> $(OUTPUT)
+	{ time ./blockage.o states/SBP-level0.txt; echo ""; } >>$(OUTPUT) 2>&1
+	{ time ./blockage.o states/SBP-level1.txt; echo ""; } >>$(OUTPUT) 2>&1
+	{ time ./blockage.o states/SBP-level2.txt; echo ""; } >>$(OUTPUT) 2>&1
+	{ time ./blockage.o states/SBP-level3.txt; echo ""; } >>$(OUTPUT) 2>&1
 
-test:
-	g++ test.cpp $(CPP_FILES) -std=c++11 -o sbp_test
-	./sbp_test
+clean:
+	rm -f *.o
 
-test_A_star:
-	g++ $(CPP_FILES) AStar.cpp -std=c++11 -o sbp_test
-	./sbp_test SBP-test.txt SBP-test-solution.txt
+test.o:
+	g++ test.cpp $(CPP_FILES) -std=c++11 -o $@
+	./$@
 
