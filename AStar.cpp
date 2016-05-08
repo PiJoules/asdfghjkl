@@ -79,7 +79,11 @@ namespace sbp {
     /**
      * A* implementation
      */
+#ifdef DEBUG
+    const std::vector<Move> A_star(const State start, const std::vector<State> expected){
+#else
     const std::vector<Move> A_star(const State start){
+#endif
         uint64_t explored_nodes = 0;
 
         // The set of nodes already evaluated.
@@ -211,6 +215,11 @@ namespace sbp {
                 return dist;
             }
     };
+
+    const std::vector<State> states_from_file(const std::string filename){
+        std::vector<State> states;
+        return states;
+    }
 }
 
 int main(int argc, char* argv[]){
