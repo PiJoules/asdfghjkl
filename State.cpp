@@ -89,7 +89,6 @@ namespace sbp {
      * This method assumes (does not check):
      * - The piece is also rectangular.
      */
-    //const std::vector<Move> State::possible_moves(const int& piece) const{
     const std::vector<Move> State::possible_moves(const int piece) const{
         std::vector<Move> moves;
 
@@ -302,7 +301,6 @@ namespace sbp {
     /**
      * State comparison.
      */
-    //const bool State::operator==(const State& other) const{
     const bool State::operator==(const State& other) const{
         // Compare dimensions
         if (this->grid_.size() != other.grid().size()){
@@ -327,13 +325,6 @@ namespace sbp {
                 }
             }
         }
-        //for (int y = 0; y < this->grid_.size(); y++){
-        //    for (int x = 0; x < this->grid_[0].size(); x++){
-        //        if (this->grid_[y][x] != other.grid()[y][x]){
-        //            return false;
-        //        }
-        //    }
-        //}
         return true;
     }
 
@@ -418,7 +409,6 @@ namespace sbp {
         const auto pos1 = pos(piece1);
         const auto pos2 = pos(piece2);
         return std::abs(pos1.first - pos2.first) + std::abs(pos1.second - pos2.second);
-        //return abs(pos1.first - pos2.first) + abs(pos1.second - pos2.second);
     }
 
     /**

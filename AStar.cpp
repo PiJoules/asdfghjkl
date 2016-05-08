@@ -40,27 +40,6 @@ namespace std {
             return state_hash;
         }
     };
-
-    /**
-     * Move hash
-     * Also borrowed from python's tuple hash, treating a move as a tuple of
-     * size 2.
-     */
-    template <>
-    struct hash<sbp::Move> {
-        size_t operator()(const sbp::Move& move) const {
-            size_t state_hash = 0x345678;
-            size_t mult = 1000003;
-
-            state_hash = (state_hash ^ move.direction()) * mult;
-            mult += 82520 + 2;
-            state_hash = (state_hash ^ move.piece()) * mult;
-            mult += 82520;
-
-            state_hash += 97531;  // No idea what this constant is
-            return state_hash;
-        }
-    };
 }
 
 namespace sbp {
@@ -84,20 +63,11 @@ namespace sbp {
     /**
      * A* implementation
      */
-#ifdef DEBUG
-    const std::vector<Move> A_star(const State start, const std::vector<State> expected){
-#else
     const std::vector<Move> A_star(const State start){
-#endif
         uint64_t explored_nodes = 0;
 
         // The set of nodes already evaluated.
         std::unordered_set<State> closed_set({start});
-
-        // The set of currently discovered nodes still to be evaluated.
-        // Initially, only the start node is known.
-        //std::unordered_set<State> open_set({start});
-        //std::priority_queue<State> open_set({start});
 
         // For each node, which node it can most efficiently be reached from.
         // If a node can be reached from many nodes, came_from will eventually contain the
@@ -114,11 +84,9 @@ namespace sbp {
         // For the first node, that value is completely heuristic.
         // States not in this have a default value of infinity.
         std::unordered_map<State, uint64_t> f_score({{start, start.heuristic()}});
-        auto cmp = [&f_score](const State state1, const State state2){
-            return f_score[state1] > f_score[state2];
-        };
-        //std::priority_queue<State, std::vector<State>, decltype(cmp)> open_set(cmp);
-        //open_set.push(start);
+
+        // The set of currently discovered nodes still to be evaluated.
+        // Initially, only the start node is known.
         std::vector<State> open_set({start});
 
         while (!open_set.empty()){
@@ -127,31 +95,9 @@ namespace sbp {
             // Get node with lowest valued f_score
             const auto current_i = std::min_element(open_set.begin(), open_set.end(),
                 [&f_score](const State state1, const State state2){
-                    //if (f_score.find(state1) == f_score.end()){
-                    //    // State1 not in f_score
-                    //    f_score[state1] = std::numeric_limits<uint64_t>::infinity();
-                    //}
-
-                    //if (f_score.find(state2) == f_score.end()){
-                    //    // State2 not in f_score
-                    //    f_score[state2] = std::numeric_limits<uint64_t>::infinity();
-                    //}
-
                     return f_score[state1] < f_score[state2];
                 });
             const auto current = *current_i;
-            //std::cout << f_score[current] << std::endl;
-            //for (const auto node : open_set){
-            //    std::cout << f_score[node] << ", ";
-            //}
-            //const auto current = open_set.top();
-            //auto copy_ = open_set;
-            //while (!copy_.empty()){
-            //    auto node = copy_.top();
-            //    std::cout << f_score[node] << ", ";
-            //    copy_.pop();
-            //}
-            //std::cout << std::endl;
 
             // Check for completeness
             if (current.is_complete()){
@@ -161,8 +107,6 @@ namespace sbp {
 
             // Remove element and add to closed_set
             open_set.erase(current_i);
-            //open_set.pop();
-            //closed_set.insert(current);
 
             // For each possible state
             for (const auto move : current.possible_moves()){
@@ -176,29 +120,14 @@ namespace sbp {
                 // Neighbor is always new after this line
 
                 // The distance from start to a neighbors
-                //if (g_score.find(current) == g_score.end()){
-                //    g_score[current] = std::numeric_limits<uint64_t>::infinity();
-                //}
-                //if (g_score.find(neighbor) == g_score.end()){
-                //    g_score[neighbor] = std::numeric_limits<uint64_t>::infinity();
-                //}
                 uint64_t tentative_g_score = g_score[current] + 1;
 
                 // Discover a new node
-                //if (open_set.find(neighbor) == open_set.end()){
-                //    open_set.insert(neighbor);
-                //}
-                //else if (tentative_g_score >= g_score[neighbor]){
-                //if (tentative_g_score >= g_score[neighbor]){
-                //    // This is not a better path
-                //    continue;
-                //}
                 open_set.push_back(neighbor);
 
                 // This path is the best until now. Record it.
                 came_from[neighbor] = std::pair<State, Move>(current, move);
                 g_score[neighbor] = tentative_g_score;
-                //f_score[neighbor] = g_score[neighbor] + neighbor.heuristic();
                 f_score[neighbor] = tentative_g_score + neighbor.heuristic();
             }
         }
@@ -218,45 +147,58 @@ namespace sbp {
 
         public:
             SingleGoalState(){}
-            SingleGoalState(const std::string& filename, const std::string& goal_filename){
-                grid_ = file_to_grid(filename);
-                goal_ = State(goal_filename);
+            SingleGoalState(const std::string& filename):State(filename){}
 
-                // Get smallest and largest piece numbers
-                int largest = GOAL_PIECE;
-                for (const auto& row : grid_){
-                    for (const auto& elem : row){
-                        if (elem > largest){
-                            largest = elem;
-                        }
-                    }
-                }
-                piece_max_ = largest;
-            }
-
+            /**
+             * Blockage cost.
+             * The heuristic will be the manhattan distance plus
+             * 1 if the goal is blocked by a piece, or 0 otherwise.
+             */
             const uint64_t heuristic() const {
                 size_t dist = manhattan_dist(2, -1);
-                // Get distance for every other piece now
-                for (size_t i = GOAL_PIECE + 1; i <= piece_max_; i++){
-                    const auto current_pos = pos(i);
-                    const auto goal_pos = goal_.pos(i);
-                    dist += std::abs(current_pos.first - goal_pos.first) +
-                            std::abs(current_pos.second - goal_pos.second);
+                for (size_t y = 0; y < grid_.size(); y++){
+                    for (size_t x = 0; x < grid_[0].size(); x++){
+                        const auto elem = grid_[y][x];
+                        if (elem == -1){
+                            if (y > 0){
+                                // Up
+                                const auto up = grid_[y-1][x];
+                                if (up > 2){
+                                    dist++;
+                                }
+                            }
+                            if (y < grid_.size()-1){
+                                // Up
+                                const auto down = grid_[y+1][x];
+                                if (down > 2){
+                                    dist++;
+                                }
+                            }
+                            if (x > 0){
+                                // Up
+                                const auto left = grid_[y][x-1];
+                                if (left > 2){
+                                    dist++;
+                                }
+                            }
+                            if (x < grid_[0].size()-1){
+                                // Up
+                                const auto right = grid_[y][x+1];
+                                if (right > 2){
+                                    dist++;
+                                }
+                            }
+                        }
+                    }
                 }
                 return dist;
             }
     };
-
-    const std::vector<State> states_from_file(const std::string filename){
-        std::vector<State> states;
-        return states;
-    }
 }
 
 int main(int argc, char* argv[]){
-    //sbp::State state("states/SBP-level3.txt");
-    sbp::State state(argv[1]);
-    //sbp::SingleGoalState state(argv[1], argv[2]);
+    //sbp::State state(argv[1]);
+    sbp::SingleGoalState state(argv[1]);
     std::vector<sbp::Move> path = sbp::A_star(state);
 
     if (path.empty()){
